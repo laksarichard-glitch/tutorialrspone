@@ -120,10 +120,25 @@ export class Game {
       "beforeend",
       `
             <div id="player-tables"></div>
-        `,
+      `,
     );
 
     // Setting up player boards
+    // Setting up player boards
+    const numPlayers = Object.keys(gamedatas.players).length;
+    Object.values(gamedatas.players).forEach((player, index) => {
+      // we generate this html snippet for each player
+      document.getElementById("player-tables").insertAdjacentHTML(
+        "beforeend",
+        `
+          <div class="playertable whiteblock playertable_${index}">
+            <div class="playertablename" style="color:#${player.color};">${player.name}</div>
+            <div id="tableau_${player.id}"></div>
+          </div>
+      `,
+      );
+    });
+
     Object.values(gamedatas.players).forEach((player) => {
       // example of setting up players boards
       this.bga.playerPanels.getElement(player.id).insertAdjacentHTML(
@@ -140,18 +155,28 @@ export class Game {
       });
 
       // example of adding a div for each player
-      document.getElementById("player-tables").insertAdjacentHTML(
-        "beforeend",
-        `
-                <div id="player-table-${player.id}">
-                    <strong>${player.name}</strong>
-                    <div>Wotcha!</div>
-                </div>
-            `,
-      );
+      // document.getElementById("player-tables").insertAdjacentHTML(
+      //   "beforeend",
+      //   `
+      //           <div id="player-table-${player.id}">
+      //               <strong>${player.name}</strong>
+      //               <div>Wotcha!</div>
+      //           </div>
+      //       `,
+      // );
     });
 
-    // TODO: Set up your game interface here, according to "gamedatas"
+    this.bga.gameArea.getElement().insertAdjacentHTML(
+      "beforeend",
+      `
+        <div id="myhand_wrap" class="whiteblock">
+            <b id="myhand_label">${_("My hand")}</b>
+            <div id="myhand">
+                <div class="fakecard"></div>
+            </div>
+        </div>
+        `,
+    );
 
     // Setup game notifications to handle (see "setupNotifications" method below)
     this.setupNotifications();

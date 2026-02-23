@@ -11,30 +11,29 @@
 
 $gameinfos = [
     // Name of the game in English (will serve as the basis for translation)
-    'game_name' => "My Great Game",
+    'game_name' => "Hearts",
 
     // Game publisher (use empty string if there is no publisher)
-    'publisher' => 'My Publishing Company',
+    'publisher' => 'Public Domain',
 
     // Url of game publisher website
-    'publisher_website' => 'http://www.mypublishingcompany.com/',
+    'publisher_website' => '',
 
     // Board Game Geek ID of the publisher
-    'publisher_bgg_id' => 1234,
+    'publisher_bgg_id' => 171,
 
     // Board game geek ID of the game
-    'bgg_id' => 0,
+    'bgg_id' => 6887,
 
     // Players configuration that can be played (ex: 2 to 4 players)
-    'players' => [2, 3, 4],
+    'players' => [2, 3, 4, 5, 6, 7, 8],
 
     // Suggest players to play with this number of players. Must be null if there is no such advice, or if there is only one possible player configuration.
     // NB: the automatic lobby will try first the lowest number of players if this is not specified. So you _have to_ specify this parameter if the lowest player number is not compatible with the default options.
-    'suggest_player_number' => null,
+    'suggest_player_number' => 4,
 
     // Discourage players to play with these numbers of players. Must be null if there is no such advice.
-    'not_recommend_player_number' => null,
-    // 'not_recommend_player_number' => array( 2, 3 ),      // <= example: this is not recommended to play this game with 2 or 3 players
+    'not_recommend_player_number' => 2,
 
     // Estimated game duration, in minutes (used only for the launch, afterward the real duration is computed)
     'estimated_duration' => 30,
@@ -72,7 +71,19 @@ $gameinfos = [
     'language_dependency' => false,
 
     // Colors attributed to players
-    'player_colors' => ['ff0000', '008000', '0000ff', 'ffa500', 'e94190', '982fff', '72c3b1', 'f07f16', 'bdd002', '7b7b7b', '000000', 'ffffff'],                       
+    'player_colors' => ['ff0000', '008000', '0000ff', 'ffa500', 'e94190', '982fff', '72c3b1', 'f07f16', 'bdd002', '7b7b7b', '000000', 'ffffff'],
+    // ff0000 red
+    // 008000 green
+    // 0000ff blue
+    // ffa500 orange
+    // e94190 pink
+    // 982fff purple
+    // 72c3b1 cyan
+    // f07f16 light orange
+    // bdd002 light green
+    // 7b7b7b gray
+    // 000000 black
+    // ffffff white     
 
     // Favorite colors support : if set to "true", support attribution of favorite colors based on player's preferences (see reattributeColorsBasedOnPreferences PHP method)
     // NB: this parameter is used only to flag games supporting this feature; you must use (or not use) reattributeColorsBasedOnPreferences PHP method to actually enable or disable the feature.
@@ -89,7 +100,7 @@ $gameinfos = [
         //  default: 740
         //  maximum possible value: 740 (ie: your game interface should fit with a 740px width (correspond to a 1024px screen)
         //  minimum possible value: 320 (the lowest value you specify, the better the display is on mobile)
-        'min' => 740,
+        'min' => 580,
     ],
 
     // Trigger an exception when PHP detect warnings.
