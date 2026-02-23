@@ -211,6 +211,11 @@ export class Game {
     );
 
     // TODO: fix handStock
+    this.handStock.setSelectionMode("single");
+    this.handStock.onCardClick = (card) => {
+      alert("boom!");
+    };
+
     this.handStock.addCards([
       { id: 1, type: 2, type_arg: 4 }, // 4 of hearts
       { id: 2, type: 3, type_arg: 11 }, // Jack of clubs
@@ -224,6 +229,7 @@ export class Game {
         this.cardsManager,
         document.getElementById(`tableau_${player.id}`),
       );
+
       // TODO: fix tableauStocks
       this.tableauStocks[player.id].addCards([
         { id: index + 10, type: index + 1, type_arg: index + 2 },
