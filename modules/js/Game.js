@@ -216,10 +216,8 @@ export class Game {
       alert("boom!");
     };
 
-    this.handStock.addCards([
-      { id: 1, type: 2, type_arg: 4 }, // 4 of hearts
-      { id: 2, type: 3, type_arg: 11 }, // Jack of clubs
-    ]);
+    // Cards in player's hand
+    this.handStock.addCards(Array.from(Object.values(this.gamedatas.hand)));
 
     // map stocks
     this.tableauStocks = [];
