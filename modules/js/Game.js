@@ -15,6 +15,9 @@
  *
  */
 
+const BgaAnimations = await importEsmLib("bga-animations", "1.x");
+const BgaCards = await importEsmLib("bga-cards", "1.x");
+
 /**
  * We create one State class per declared state on the PHP side, to handle all state specific code here.
  * onEnteringState, onLeavingState and onPlayerActivationChange are predefined names that will be called by the framework.
@@ -115,6 +118,11 @@ export class Game {
     console.log("Starting game setup");
     this.gamedatas = gamedatas;
 
+    // create the animation manager, and bind it to the `game.bgaAnimationsActive()` function
+    this.animationManager = new BgaAnimations.Manager({
+      animationsActive: () => this.bga.gameui.bgaAnimationsActive(),
+    });
+
     // Example to add a div on the game area
     this.bga.gameArea.getElement().insertAdjacentHTML(
       "beforeend",
@@ -123,7 +131,6 @@ export class Game {
       `,
     );
 
-    // Setting up player boards
     // Setting up player boards
     const numPlayers = Object.keys(gamedatas.players).length;
     Object.values(gamedatas.players).forEach((player, index) => {
@@ -172,11 +179,56 @@ export class Game {
         <div id="myhand_wrap" class="whiteblock">
             <b id="myhand_label">${_("My hand")}</b>
             <div id="myhand">
-                <div class="fakecard"></div>
             </div>
         </div>
         `,
     );
+    const cardWidth = 100;
+    const cardHeight = 135;
+
+    // create the card manager
+    this.cardsManager = new BgaCards.Manager({
+      animationManager: this.animationManager,
+      type: "ha-card", // the "type" of our cards in css
+      getId: (card) => card.id,
+
+      cardWidth: cardWidth,
+      cardHeight: cardHeight,
+      cardBorderRadius: "5%",
+      setupFrontDiv: (card, div) => {
+        div.dataset.type = card.type; // suit 1..4
+        div.dataset.typeArg = card.type_arg; // value 2..14
+        div.style.backgroundPositionX = `calc(100% / 14 * (${card.type_arg} - 2))`; // 14 is number of columns in stock image minus 1
+        div.style.backgroundPositionY = `calc(100% / 3 * (${card.type} - 1))`; // 3 is number of rows in stock image minus 1
+        this.bga.gameui.addTooltipHtml(div.id, `tooltip of ${card.type}`);
+      },
+    });
+
+    // create the stock, in the game setup
+    this.handStock = new BgaCards.HandStock(
+      this.cardsManager,
+      document.getElementById("myhand"),
+    );
+
+    // TODO: fix handStock
+    this.handStock.addCards([
+      { id: 1, type: 2, type_arg: 4 }, // 4 of hearts
+      { id: 2, type: 3, type_arg: 11 }, // Jack of clubs
+    ]);
+
+    // map stocks
+    this.tableauStocks = [];
+    Object.values(gamedatas.players).forEach((player, index) => {
+      // add player tableau stock
+      this.tableauStocks[player.id] = new BgaCards.LineStock(
+        this.cardsManager,
+        document.getElementById(`tableau_${player.id}`),
+      );
+      // TODO: fix tableauStocks
+      this.tableauStocks[player.id].addCards([
+        { id: index + 10, type: index + 1, type_arg: index + 2 },
+      ]);
+    });
 
     // Setup game notifications to handle (see "setupNotifications" method below)
     this.setupNotifications();
