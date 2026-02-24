@@ -45,7 +45,7 @@ class PlayerTurn {
       // Add test action buttons in the action status bar, simulating a card click:
       playableCardsIds.forEach((cardId) =>
         this.bga.statusBar.addActionButton(
-          _("Play card with id ${card_id}").replace("${card_id}", cardId),
+          _("Play a card with id ${card_id}").replace("${card_id}", cardId),
           () => this.onCardClick(cardId),
         ),
       );
@@ -216,8 +216,27 @@ export class Game {
       alert("boom!");
     };
 
-    // Cards in player's hand
-    this.handStock.addCards(Array.from(Object.values(this.gamedatas.hand)));
+    // Cards in player's hand - sorted by suit then rank
+    const aHand = Object.values(this.gamedatas.hand);
+
+    aHand.sort(function (a, b) {
+      // sort by suit the rank
+      if (parseInt(a.type) < parseInt(b.type)) {
+        return -1;
+      } else if (parseInt(a.type) > parseInt(b.type)) {
+        return 1;
+      } else {
+        if (parseInt(a.type_arg) < parseInt(b.type_arg)) {
+          return -1;
+        } else if (parseInt(a.type_arg) > parseInt(b.type_arg)) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+    });
+
+    this.handStock.addCards(Array.from(aHand));
 
     // map stocks
     this.tableauStocks = [];
