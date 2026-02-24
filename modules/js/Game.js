@@ -216,27 +216,24 @@ export class Game {
       alert("boom!");
     };
 
-    // Cards in player's hand - sorted by suit then rank
-    const aHand = Object.values(this.gamedatas.hand);
-
-    aHand.sort(function (a, b) {
-      // sort by suit the rank
-      if (parseInt(a.type) < parseInt(b.type)) {
-        return -1;
-      } else if (parseInt(a.type) > parseInt(b.type)) {
-        return 1;
-      } else {
-        if (parseInt(a.type_arg) < parseInt(b.type_arg)) {
+    this.handStock.addCards(
+      Object.values(this.gamedatas.hand).sort(function (a, b) {
+        // sort by suit the rank
+        if (parseInt(a.type) < parseInt(b.type)) {
           return -1;
-        } else if (parseInt(a.type_arg) > parseInt(b.type_arg)) {
+        } else if (parseInt(a.type) > parseInt(b.type)) {
           return 1;
         } else {
-          return 0;
+          if (parseInt(a.type_arg) < parseInt(b.type_arg)) {
+            return -1;
+          } else if (parseInt(a.type_arg) > parseInt(b.type_arg)) {
+            return 1;
+          } else {
+            return 0;
+          }
         }
-      }
-    });
-
-    this.handStock.addCards(Array.from(aHand));
+      }),
+    );
 
     // map stocks
     this.tableauStocks = [];
