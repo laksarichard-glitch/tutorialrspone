@@ -218,19 +218,14 @@ export class Game {
 
     this.handStock.addCards(
       Object.values(this.gamedatas.hand).sort(function (a, b) {
-        // sort by suit the rank
+        // sort by suit then rank
         if (parseInt(a.type) < parseInt(b.type)) {
           return -1;
         } else if (parseInt(a.type) > parseInt(b.type)) {
           return 1;
         } else {
-          if (parseInt(a.type_arg) < parseInt(b.type_arg)) {
-            return -1;
-          } else if (parseInt(a.type_arg) > parseInt(b.type_arg)) {
-            return 1;
-          } else {
-            return 0;
-          }
+          // sub sort by rank
+          return parseInt(a.type_arg) - parseInt(b.type_arg);
         }
       }),
     );
