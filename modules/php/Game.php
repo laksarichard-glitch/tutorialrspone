@@ -52,16 +52,6 @@ class Game extends \Bga\GameFramework\Table
         $this->cards = $this->deckFactory->createDeck('card'); // card is the our database name
         $this->playerEnergy = $this->bga->counterFactory->createPlayerCounter('energy');
 
-        // self::$CARD_TYPES = [
-        //     1 => [
-        //         "card_name" => clienttranslate('Troll'), // ...
-        //     ],
-        //     2 => [
-        //         "card_name" => clienttranslate('Goblin'), // ...
-        //     ],
-        //     // ...
-        // ];
-
         $this->card_types = [
             "suites" => [
                 1 => [
@@ -86,11 +76,7 @@ class Game extends \Bga\GameFramework\Table
                 7 => ['name' => '7'],
                 8 => ['name' => '8'],
                 9 => ['name' => '9'],
-                10 => ['name' => '10'],
-                11 => ['name' => clienttranslate('J')],
-                12 => ['name' => clienttranslate('Q')],
-                13 => ['name' => clienttranslate('K')],
-                14 => ['name' => clienttranslate('A')]
+                10 => ['name' => '10']
             ]
         ];
 
@@ -240,23 +226,25 @@ class Game extends \Bga\GameFramework\Table
         // Set current trick color to zero (= no trick color)
         $this->setGameStateInitialValue('trick_color', 0);
 
-        // Create cards
+        // Create cards - 1 to 10 only!
         $cards = [];
         foreach ($this->card_types["suites"] as $suit => $suit_info) {
             // spade, heart, diamond, club
             foreach ($this->card_types["types"] as $value => $info_value) {
-                //  2, 3, 4, ... K, A
-                $cards[] = ['type' => $suit, 'type_arg' => $value, 'nbr' => 1];
+                //  2, 3, 4
+                if ($value < 11) {
+                    $cards[] = ['type' => $suit, 'type_arg' => $value, 'nbr' => 1];
+                }
             }
         }
         $this->cards->createCards($cards, 'deck');
 
         // Shuffle deck
         $this->cards->shuffle('deck');
-        // Deal 13 cards to each players
+        // Deal 8 cards to each players
         $players = $this->loadPlayersBasicInfos();
         foreach ($players as $player_id => $player) {
-            $this->cards->pickCards(13, 'deck', $player_id);
+            $this->cards->pickCards(8, 'deck', $player_id);
         }
 
         // Activate first player once everything has been initialized and ready.

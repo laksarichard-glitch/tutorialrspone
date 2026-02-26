@@ -229,6 +229,8 @@ export class Game {
       }),
     );
 
+    console.log(this.gamedatas);
+
     // map stocks
     this.tableauStocks = [];
     Object.values(gamedatas.players).forEach((player, index) => {
