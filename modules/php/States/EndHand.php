@@ -5,23 +5,24 @@ declare(strict_types=1);
 namespace Bga\Games\tutorialrspone\States;
 
 use Bga\GameFramework\StateType;
-use Bga\GameFramework\States\GameState;
 use Bga\Games\tutorialrspone\Game;
-use Bga\Games\tutorialrspone\States\PlayerTurn;
+use Bga\GameFramework\States\GameState;
+use Bga\Games\tutorialrspone\States\NewHand;
 
-class NextPlayer extends GameState
+class EndHand extends GameState
 {
     public function __construct(protected Game $game)
     {
         parent::__construct(
             $game,
-            id: 32,
+            id: 40,
             type: StateType::GAME,
+            description: "",
         );
     }
 
     public function onEnteringState()
     {
-        return PlayerTurn::class;
+        return NewHand::class;
     }
 }
