@@ -210,7 +210,6 @@ export class Game {
       document.getElementById("myhand"),
     );
 
-    // TODO: fix handStock
     this.handStock.setSelectionMode("single");
     this.handStock.onCardClick = (card) => {
       this.tableauStocks[card.location_arg].addCards([card]);
@@ -223,13 +222,11 @@ export class Game {
           // sub sort by rank
           return parseInt(a.type_arg) - parseInt(b.type_arg);
         } else {
-          // sub sort by rank
+          // sort by suit
           return parseInt(a.type) - parseInt(b.type);
         }
       }),
     );
-
-    console.log(this.gamedatas);
 
     // map stocks
     this.tableauStocks = [];
