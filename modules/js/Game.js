@@ -213,19 +213,18 @@ export class Game {
     // TODO: fix handStock
     this.handStock.setSelectionMode("single");
     this.handStock.onCardClick = (card) => {
-      alert("boom!");
+      this.tableauStocks[card.location_arg].addCards([card]);
     };
 
     this.handStock.addCards(
       Object.values(this.gamedatas.hand).sort(function (a, b) {
         // sort by suit then rank
-        if (parseInt(a.type) < parseInt(b.type)) {
-          return -1;
-        } else if (parseInt(a.type) > parseInt(b.type)) {
-          return 1;
-        } else {
+        if (a.type === b.type) {
           // sub sort by rank
           return parseInt(a.type_arg) - parseInt(b.type_arg);
+        } else {
+          // sub sort by rank
+          return parseInt(a.type) - parseInt(b.type);
         }
       }),
     );
@@ -239,10 +238,12 @@ export class Game {
         document.getElementById(`tableau_${player.id}`),
       );
 
-      // TODO: fix tableauStocks
-      this.tableauStocks[player.id].addCards([
-        { id: index + 10, type: index + 1, type_arg: index + 2 },
-      ]);
+      // Cards played on table
+      for (i in this.gamedatas.cardsontable) {
+        var card = this.gamedatas.cardsontable[i];
+        var player_id = card.location_arg;
+        this.tableauStocks[player_id].addCards([card]);
+      }
     });
 
     // Setup game notifications to handle (see "setupNotifications" method below)
